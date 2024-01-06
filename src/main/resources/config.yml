@@ -1,0 +1,10 @@
+bubbles:
+  message-format: "%message%"
+  lifespan: 10.0
+  max-count: 3
+  distance-between: 0.1
+  player-offset: 0.0
+
+messages:
+  no-permissions: "&#ff6969Insufficient permissions"
+  reload: "&#b7faa2SimpleChatBubble has been reloaded &#66b04f🔃"
