@@ -73,6 +73,9 @@ public class ChatBubble {
 
     public void removeChat(Hologram hologram) {
         hologram.hideHologram(Bukkit.getOnlinePlayers());
+        if (hologram.getDisplayEntity() != null) {
+            player.removePassenger(hologram.getDisplayEntity());
+        }
         hologram.deleteHologram();
     }
 
@@ -84,7 +87,7 @@ public class ChatBubble {
                     removeChat(chatBubbles[i]);
                 }
 
-                chatBubbles[i]=null;
+                chatBubbles[i] = null;
             } else {
                 duration[i] = duration[i] + val;
             }
