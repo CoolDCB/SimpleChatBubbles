@@ -1,6 +1,6 @@
 package me.dave.simplechatbubbles.command;
 
-import me.dave.chatcolorhandler.ChatColorHandler;
+import de.oliver.fancyholograms.libs.chatcolorhandler.ChatColorHandler;
 import me.dave.simplechatbubbles.SimpleChatBubbles;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
