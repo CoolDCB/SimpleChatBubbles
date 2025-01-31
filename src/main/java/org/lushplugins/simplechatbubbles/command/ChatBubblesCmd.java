@@ -1,7 +1,7 @@
-package me.dave.simplechatbubbles.command;
+package org.lushplugins.simplechatbubbles.command;
 
 import de.oliver.fancyholograms.libs.chatcolorhandler.ChatColorHandler;
-import me.dave.simplechatbubbles.SimpleChatBubbles;
+import org.lushplugins.simplechatbubbles.SimpleChatBubbles;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;

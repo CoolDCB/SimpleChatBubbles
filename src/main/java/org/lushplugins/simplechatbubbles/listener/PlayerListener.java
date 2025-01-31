@@ -1,7 +1,7 @@
-package me.dave.simplechatbubbles.listener;
+package org.lushplugins.simplechatbubbles.listener;
 
-import me.dave.simplechatbubbles.ChatBubble;
-import me.dave.simplechatbubbles.SimpleChatBubbles;
+import org.lushplugins.simplechatbubbles.ChatBubble;
+import org.lushplugins.simplechatbubbles.SimpleChatBubbles;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

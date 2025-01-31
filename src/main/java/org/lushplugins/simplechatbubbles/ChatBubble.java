@@ -1,12 +1,8 @@
-package me.dave.simplechatbubbles;
+package org.lushplugins.simplechatbubbles;
 
 import de.oliver.fancyholograms.api.FancyHologramsPlugin;
-import de.oliver.fancyholograms.api.Hologram;
-import de.oliver.fancyholograms.api.HologramManager;
-import de.oliver.fancyholograms.api.HologramType;
-import de.oliver.fancyholograms.api.data.DisplayHologramData;
-import de.oliver.fancyholograms.api.data.HologramData;
 import de.oliver.fancyholograms.api.data.TextHologramData;
+import de.oliver.fancyholograms.api.hologram.Hologram;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Player;
@@ -19,6 +15,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ChatBubble {
+    // TODO: Create ChatBubbleManager class instead of static variables
     private static BukkitTask bubbleTask;
     private static ConcurrentHashMap<UUID, String> processMap;
     private static ConcurrentHashMap<UUID, ChatBubble> bubbleMap;
@@ -43,18 +40,14 @@ public class ChatBubble {
             duration[i] = duration[i - 1];
         }
 
-        DisplayHologramData displayData = new DisplayHologramData();
-        displayData.setLocation(player.getLocation().setDirection(new Vector(90, 0, 0)));
-        displayData.setBillboard(Display.Billboard.VERTICAL);
-        displayData.setTranslation(new Vector3f(0, (float) (1.1 + SimpleChatBubbles.getInstance().getConfigManager().getBubbleOffset()), 0));
+        Hologram hologram = FancyHologramsPlugin.get().getHologramManager().create(new TextHologramData("chat_bubble", player.getLocation().setDirection(new Vector(90, 0, 0)))
+            .setText(List.of(message))
+            .setBillboard(Display.Billboard.VERTICAL)
+            .setTranslation(new Vector3f(0, (float) (1.1 + SimpleChatBubbles.getInstance().getConfigManager().getBubbleOffset()), 0)));
 
-        TextHologramData textData = new TextHologramData();
-        textData.setText(List.of(message));
+        Bukkit.getOnlinePlayers().forEach(hologram::forceShowHologram);
 
-        HologramManager manager = FancyHologramsPlugin.get().getHologramManager();
-        Hologram hologram = manager.create(new HologramData("chat_bubble", displayData, HologramType.TEXT, textData));
-        hologram.showHologram(Bukkit.getOnlinePlayers());
-        player.addPassenger(hologram.getDisplayEntity());
+        SimpleChatBubbles.getInstance().getPassengerManager().addPassenger(player.getEntityId(), player.getUniqueId(), hologram.getEntityId(), hologram.getViewers());
 
         chatBubbles[0] = hologram;
         duration[0] = 0;
@@ -62,20 +55,20 @@ public class ChatBubble {
         for (int i = chatBubbles.length - 1; i > 0; i--) {
             if (chatBubbles[i] != null) {
                 Hologram currHologram = chatBubbles[i];
+                TextHologramData hologramData = (TextHologramData) currHologram.getData();
 
-                float translation = (float) ((SimpleChatBubbles.getInstance().getConfigManager().getStringWidth(((TextHologramData) currHologram.getData().getTypeData()).getText().get(0)) / 200 + 1) * 0.3F + SimpleChatBubbles.getInstance().getConfigManager().getDistanceBetweenBubbles());
-                currHologram.getData().getDisplayData().setTranslation(currHologram.getData().getDisplayData().getTranslation().add(new Vector3f(0F, translation,0F)));
-                currHologram.updateHologram();
+                float translation = (float) (((double) SimpleChatBubbles.getInstance().getConfigManager().getStringWidth(hologramData.getText().get(0)) / 200 + 1) * 0.3F + SimpleChatBubbles.getInstance().getConfigManager().getDistanceBetweenBubbles());
+                hologramData.setTranslation(hologramData.getTranslation().add(new Vector3f(0F, translation,0F)));
                 currHologram.refreshHologram(Bukkit.getOnlinePlayers());
             }
         }
     }
 
     public void removeChat(Hologram hologram) {
-        hologram.hideHologram(Bukkit.getOnlinePlayers());
-        if (hologram.getDisplayEntity() != null) {
-            player.removePassenger(hologram.getDisplayEntity());
-        }
+        Bukkit.getOnlinePlayers().forEach(hologram::forceHideHologram);
+
+        SimpleChatBubbles.getInstance().getPassengerManager().removePassenger(player.getEntityId(), hologram.getEntityId(), hologram.getViewers());
+
         hologram.deleteHologram();
     }
 

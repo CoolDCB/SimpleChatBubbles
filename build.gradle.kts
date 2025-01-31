@@ -1,26 +1,29 @@
 plugins {
     java
     `maven-publish`
-    id("com.github.johnrengelman.shadow") version("8.1.1")
+    id("com.gradleup.shadow") version("8.3.0")
+    id("xyz.jpenilla.run-paper") version("2.3.1")
 }
 
-group = "me.dave"
+group = "org.lushplugins"
 version = "1.0.1"
 
 repositories {
     mavenCentral()
     mavenLocal()
-    maven { url = uri("https://repo.papermc.io/repository/maven-public/") } // PaperMC
-    maven { url = uri("https://repo.fancyplugins.de/snapshots") } // FancyHolograms
+    maven("https://repo.papermc.io/repository/maven-public/") // PaperMC
+    maven("https://repo.fancyplugins.de/snapshots") // FancyHolograms
+    maven("https://repo.codemc.io/repository/maven-releases/") // PacketEvents
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT")
-    compileOnly("de.oliver:FancyHolograms:2.0.5.52")
+    compileOnly("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")
+    compileOnly("de.oliver:FancyHolograms:2.4.2.129")
+    compileOnly("com.github.retrooper:packetevents-spigot:2.7.0")
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 }
 
 tasks {
@@ -50,5 +53,16 @@ tasks {
         from("src/main/resources")
         include("font-widths.txt")
         into("$buildDir/resources/main")
+    }
+
+    runServer {
+        minecraftVersion("1.21.1")
+
+        downloadPlugins{
+            modrinth("fancyholograms", "2.4.2.129")
+            modrinth("packetevents", "2.7.0")
+            modrinth("viaversion", "5.2.2-SNAPSHOT+662")
+            modrinth("viabackwards", "5.2.2-SNAPSHOT+380")
+        }
     }
 }

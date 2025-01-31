@@ -1,9 +1,10 @@
 name: SimpleChatBubbles
 version: '${version}'
-main: me.dave.simplechatbubbles.SimpleChatBubbles
+main: org.lushplugins.simplechatbubbles.SimpleChatBubbles
 api-version: '1.20'
 depend:
   - FancyHolograms
+  - packetevents
 commands:
   chatbubbles:
     description: Main command for SimpleChatBubbles

@@ -1,9 +1,12 @@
 name: SimpleChatBubbles
 version: '${version}'
-main: me.dave.simplechatbubbles.SimpleChatBubbles
+main: org.lushplugins.simplechatbubbles.SimpleChatBubbles
 api-version: '1.20'
 dependencies:
   server:
     FancyHolograms:
+      load: BEFORE
+      required: true
+    packetevents:
       load: BEFORE
       required: true

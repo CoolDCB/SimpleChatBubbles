@@ -1,6 +1,6 @@
-package me.dave.simplechatbubbles.config;
+package org.lushplugins.simplechatbubbles.config;
 
-import me.dave.simplechatbubbles.SimpleChatBubbles;
+import org.lushplugins.simplechatbubbles.SimpleChatBubbles;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
